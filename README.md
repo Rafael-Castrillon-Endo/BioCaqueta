@@ -7,7 +7,7 @@ MONGO_URL=mongodb+srv://<usuario>:<password>@<cluster>.mongodb.net/<nombre_db>
 PORT=3000
 ```
 
-- **MONGO_URL**: cadena de conexión a tu base de datos en MongoDB Atlas. Reemplaza `<usuario>`, `<password>` y `<cluster>` por tus credenciales reales (sin los símbolos `<` `>`).
+- **MONGO_URL**: cadena de conexión a la base de datos en MongoDB Atlas. Reemplazar `<usuario>`, `<password>` y `<cluster>` por las credenciales reales.
 - **PORT**: puerto en el que correrá el servidor Express.
 
 ## Instalación y ejecución
