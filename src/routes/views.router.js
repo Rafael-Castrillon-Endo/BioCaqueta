@@ -12,3 +12,22 @@ router.get('/', async (req, res) => {
         res.status(500).send('Error al cargar los avistamientos');
     }
 });
+
+router.get('/editar/:id', async (req, res) => {
+    try {
+        const avistamiento = await Avistamiento.findById(req.params.id).lean();
+
+        if(!avistamiento) {
+            return res.status(404).send('Avistamiento no encontrado');
+        }
+
+        res.render('editar', { avistamiento });
+    } catch(error) {
+        console.log('Error GET /editar/:id ->', error.message);
+        res.status(500).send('Error al cargar el avistamiento');
+    }
+});
+
+
+
+export default router;
