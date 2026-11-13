@@ -17,9 +17,32 @@ router.get('/', async (req, res) => {
 
         res.status(200).json(avistamientos);
     } catch(error) {
-        console.log('Error /api/avistamientos -> ', error.message);
+        console.log('Error /api/avistamientos (get) -> ', error.message);
         res.status(500).json({
-            estado : 500,
+            state : 500,
+            message : error.message
+        });
+    }
+
+});
+
+router.post('/', async (req, res) => {
+
+    try {
+        const nuevoAvistamiento = new Avistamiento(req.body);
+        await nuevoAvistamiento.save();
+
+        const esFormulario = req.headers['content-type']?.includes('application/x-www-form-urlencoded');
+
+        if(esFormulario){
+            return res.redirect('/');
+        }
+
+        res.status(201).json(nuevoAvistamiento);
+    } catch(error) {
+        console.log('Error /api/avistamientos (post) ->', error.message)
+        res.status(400).json({
+            state : 400,
             message : error.message
         });
     }
