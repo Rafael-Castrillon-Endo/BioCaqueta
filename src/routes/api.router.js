@@ -121,7 +121,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.post('/delet/:id', async (req, res) => {
+router.post('/delete/:id', async (req, res) => {
     try {
         await Avistamiento.findByIdAndDelete(req.params.id);
 

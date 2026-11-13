@@ -1,5 +1,5 @@
 import express from 'express';
-import Avistamiento from '../models/Avistamiento';
+import Avistamiento from '../models/Avistamiento.js';
 
 const router = express.Router();
 
@@ -27,7 +27,5 @@ router.get('/editar/:id', async (req, res) => {
         res.status(500).send('Error al cargar el avistamiento');
     }
 });
-
-
 
 export default router;
