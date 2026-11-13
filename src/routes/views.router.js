@@ -5,8 +5,13 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        const avistamientos = await Avistamiento.find().sort({ fechaRegistro: -1 }).lean();
-        res.render('home', { avistamientos });
+        const filtro = {};
+        if (req.query.categoria) {
+            filtro.categoria = req.query.categoria;
+        }
+
+        const avistamientos = await Avistamiento.find(filtro).sort({ fechaRegistro: -1 }).lean();
+        res.render('home', { avistamientos, filtroActual: req.query.categoria || '' });
     } catch (error) {
         console.log('Error GET / ->', error.message);
         res.status(500).send('Error al cargar los avistamientos');

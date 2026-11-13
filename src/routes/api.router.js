@@ -89,7 +89,7 @@ router.post('/update/:id', async (req, res) => {
                 runValidators : true
             }
         );
-        
+
         res.redirect('/');
     } catch(error){
         console.log('Error /api/avistamientos/:id ', error.message);

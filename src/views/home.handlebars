@@ -1,0 +1,147 @@
+<div class="space-y-8">
+
+  <div class="flex flex-col gap-1">
+    <h1 class="text-2xl font-semibold tracking-tight text-slate-900">Avistamientos registrados</h1>
+    <p class="text-sm text-slate-500">Consulta, filtra y gestiona los registros de fauna y flora del Caquetá.</p>
+  </div>
+
+  <details class="group rounded-xl border border-slate-200 bg-white shadow-sm transition-shadow open:shadow-md">
+    <summary class="flex cursor-pointer select-none items-center justify-between px-6 py-4 text-sm font-medium text-slate-900">
+      <span class="flex items-center gap-2">
+        <span class="flex h-6 w-6 items-center justify-center rounded-md bg-brand-100 text-xs text-brand-700">+</span>
+        Registrar nuevo avistamiento
+      </span>
+      <span class="text-lg leading-none text-slate-400 transition-transform group-open:rotate-45">+</span>
+    </summary>
+
+    <form action="/api/avistamientos" method="POST" class="grid grid-cols-1 gap-4 border-t border-slate-100 px-6 py-6 sm:grid-cols-2">
+      <div class="flex flex-col gap-1.5">
+        <label for="nombreComun" class="text-xs font-medium text-slate-600">Nombre común</label>
+        <input id="nombreComun" name="nombreComun" type="text" required placeholder="Ej. Guacamaya bandera"
+          class="rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-2 focus:ring-brand-100">
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label for="nombreCientifico" class="text-xs font-medium text-slate-600">Nombre científico</label>
+        <input id="nombreCientifico" name="nombreCientifico" type="text" required placeholder="Ej. Ara macao"
+          class="rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-2 focus:ring-brand-100">
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label for="categoria" class="text-xs font-medium text-slate-600">Categoría</label>
+        <select id="categoria" name="categoria" required
+          class="rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-2 focus:ring-brand-100">
+          <option value="" disabled selected>Selecciona una categoría</option>
+          <option value="Mamífero">Mamífero</option>
+          <option value="Ave">Ave</option>
+          <option value="Reptil">Reptil</option>
+          <option value="Anfibio">Anfibio</option>
+          <option value="Flora">Flora</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label for="zona" class="text-xs font-medium text-slate-600">Zona</label>
+        <input id="zona" name="zona" type="text" required placeholder="Ej. El Caraño"
+          class="rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-2 focus:ring-brand-100">
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label for="estadoConservacion" class="text-xs font-medium text-slate-600">Estado de conservación</label>
+        <select id="estadoConservacion" name="estadoConservacion"
+          class="rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-2 focus:ring-brand-100">
+          <option value="Preocupación menor">Preocupación menor</option>
+          <option value="Vulnerable">Vulnerable</option>
+          <option value="En peligro">En peligro</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label for="investigador" class="text-xs font-medium text-slate-600">Investigador</label>
+        <input id="investigador" name="investigador" type="text" required placeholder="Nombre del estudiante o docente"
+          class="rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-2 focus:ring-brand-100">
+      </div>
+
+      <div class="flex justify-end pt-2 sm:col-span-2">
+        <button type="submit"
+          class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand-700 active:bg-brand-800">
+          Guardar avistamiento
+        </button>
+      </div>
+    </form>
+  </details>
+
+  <div class="flex items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white px-5 py-3.5 shadow-sm">
+    <form method="GET" action="/" class="flex items-center gap-3">
+      <label for="filtroCategoria" class="text-xs font-medium text-slate-500">Filtrar por categoría</label>
+      <select id="filtroCategoria" name="categoria" onchange="this.form.submit()"
+        class="rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-1.5 text-sm text-slate-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100">
+        <option value="" {{#unless filtroActual}}selected{{/unless}}>Todas</option>
+        <option value="Mamífero" {{#if (eq filtroActual "Mamífero")}}selected{{/if}}>Mamífero</option>
+        <option value="Ave" {{#if (eq filtroActual "Ave")}}selected{{/if}}>Ave</option>
+        <option value="Reptil" {{#if (eq filtroActual "Reptil")}}selected{{/if}}>Reptil</option>
+        <option value="Anfibio" {{#if (eq filtroActual "Anfibio")}}selected{{/if}}>Anfibio</option>
+        <option value="Flora" {{#if (eq filtroActual "Flora")}}selected{{/if}}>Flora</option>
+      </select>
+    </form>
+    <p class="text-xs text-slate-400">{{avistamientos.length}} registro(s)</p>
+  </div>
+
+  {{#if avistamientos.length}}
+  <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-100 text-sm">
+        <thead class="bg-slate-50/70">
+          <tr class="text-left text-xs font-medium uppercase tracking-wide text-slate-500">
+            <th class="px-5 py-3">Especie</th>
+            <th class="px-5 py-3">Categoría</th>
+            <th class="px-5 py-3">Zona</th>
+            <th class="px-5 py-3">Estado</th>
+            <th class="px-5 py-3">Investigador</th>
+            <th class="px-5 py-3">Fecha</th>
+            <th class="px-5 py-3 text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {{#each avistamientos}}
+          <tr class="transition-colors hover:bg-slate-50/60">
+            <td class="px-5 py-3.5">
+              <p class="font-medium text-slate-900">{{this.nombreComun}}</p>
+              <p class="text-xs italic text-slate-400">{{this.nombreCientifico}}</p>
+            </td>
+            <td class="px-5 py-3.5 text-slate-600">{{this.categoria}}</td>
+            <td class="px-5 py-3.5 text-slate-600">{{this.zona}}</td>
+            <td class="px-5 py-3.5">
+              <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium {{estadoClass this.estadoConservacion}}">
+                {{this.estadoConservacion}}
+              </span>
+            </td>
+            <td class="px-5 py-3.5 text-slate-600">{{this.investigador}}</td>
+            <td class="px-5 py-3.5 text-slate-500">{{formatFecha this.fechaRegistro}}</td>
+            <td class="px-5 py-3.5">
+              <div class="flex items-center justify-end gap-2">
+                <a href="/editar/{{this._id}}"
+                  class="rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition hover:border-slate-300 hover:bg-slate-50">
+                  Editar
+                </a>
+                <form action="/api/avistamientos/delete/{{this._id}}" method="POST"
+                  onsubmit="return confirm('¿Eliminar este avistamiento?');">
+                  <button type="submit"
+                    class="rounded-md border border-red-100 bg-red-50 px-2.5 py-1.5 text-xs font-medium text-red-600 transition hover:border-red-200 hover:bg-red-100">
+                    Eliminar
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {{else}}
+  <div class="rounded-xl border border-dashed border-slate-300 bg-white px-6 py-14 text-center">
+    <p class="text-sm text-slate-500">No hay avistamientos registrados todavía.</p>
+  </div>
+  {{/if}}
+</div>

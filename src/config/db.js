@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
 
-const conexionURL = process.env.MONGO_URL;
-
 const conectarDB = async () => {
     try {
+        const conexionURL = process.env.MONGO_URL;
         await mongoose.connect(conexionURL);
         console.log('MongoDB conectado');
     } catch(error) {
