@@ -59,7 +59,7 @@ router.put('/:id', async (req, res) => {
                 new : true,
                 runValidators : true
             }
-        )
+        );
 
         if(!actualizado){
             return res.status(404).json({
@@ -75,6 +75,63 @@ router.put('/:id', async (req, res) => {
             state : 400,
             message : error.message
         });
+    }
+
+});
+
+router.post('/update/:id', async (req, res) => {
+    try {
+        await Avistamiento.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new : true,
+                runValidators : true
+            }
+        );
+        
+        res.redirect('/');
+    } catch(error){
+        console.log('Error /api/avistamientos/:id ', error.message);
+        res.status(400).json({
+            state : 400,
+            message : error.message
+        });
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const eliminado = await Avistamiento.findByIdAndDelete(req.params.id);
+
+        if(!eliminado){
+            return res.status(404).json({
+                state : 404,
+                message : "Avistamiento no encontrado"
+            })
+        }
+
+        res.status(200).json(eliminado)
+    } catch(error) {
+        console.log('Error /api/avistamiento/:id (delete) ', error.message);
+        res.status(400).json({
+            state : 400,
+            message : error.message
+        })
+    }
+});
+
+router.post('/delet/:id', async (req, res) => {
+    try {
+        await Avistamiento.findByIdAndDelete(req.params.id);
+
+        res.redirect('/');
+    } catch(error) {
+        console.log('Error /api/avistamiento/:id (delete) ', error.message);
+        res.status(400).json({
+            state : 400,
+            message : error.message
+        })
     }
 });
 
