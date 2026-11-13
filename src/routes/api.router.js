@@ -49,5 +49,34 @@ router.post('/', async (req, res) => {
 
 });
 
+router.put('/:id', async (req, res) => {
+
+    try {
+        const actualizado = await Avistamiento.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new : true,
+                runValidators : true
+            }
+        )
+
+        if(!actualizado){
+            return res.status(404).json({
+                state : 404,
+                message : "Avistamiento no encontrado"
+            });
+        }
+
+        res.status(200).json(actualizado);
+    } catch(error) {
+        console.log('Error /api/avistamientos/:id ', error.message);
+        res.status(400).json({
+            state : 400,
+            message : error.message
+        });
+    }
+});
+
 
 export default router;
